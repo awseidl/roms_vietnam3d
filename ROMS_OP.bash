@@ -102,7 +102,3 @@ cp vietnam3d_sta.nc ../Complete_output/vietnam3d_sta.nc
 echo 'Output netCDFs can be found in "Complete_output" folder'
 
 
-
-## Only for andrewws@pc3033!
-#cd ${ROOT_FOLDER}/${ROMS_INPUT_FOLDER}
-#rsync -vre ssh *.nc andrewws@xvis-m4a:/lustre/storeA/users/andrewws/Inputs/working --progress
