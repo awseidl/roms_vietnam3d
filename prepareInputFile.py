@@ -103,6 +103,18 @@ with open(inputFile,'w') as f:
         else:
             f.writelines(line)
 
+# Looking for stations.in in correct place
+staReplace = "    SPOSNAM = " +rootFolder+ "/Include/stations.in   ! Stations file\n"
+with open(inputFile,'r') as f:
+    get_all=f.readlines()
+
+with open(inputFile,'w') as f:
+    for i,line in enumerate(get_all,1):  
+        if (line.find("SPOSNAM =") != -1):
+            f.writelines(staReplace)
+        else:
+            f.writelines(line)
+
 # Setting timesteps according to user specified simulation length
 with open(inputFile,'r') as f:
     get_all=f.readlines()
