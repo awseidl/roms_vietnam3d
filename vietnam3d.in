@@ -217,7 +217,6 @@ ad_VolCons(north) ==  F                            ! northern boundary
         NRST == 17280 ! daily restart files
         NSTA == 2160
         NFLT == 99999999
-!       NINFO == 180      ! Every 15 mins at DT=5sec
         NINFO ==  60     ! Every  1 hours at DT=60sec 
 
 ! Output history, quicksave, average, and diagnostic files parameters.
@@ -378,7 +377,7 @@ LtracerSponge == T T                            ! temperature, salinity, inert
 ! origin for tidal forcing, and model reference time for output
 ! NetCDF units attribute.
 
-      DSTART =  17724.5d0                  ! 2018-07-12 12:00:00
+      DSTART =  17722.5d0                  ! 2018-07-10 12:00:00
   TIDE_START =  0.0d0                      ! days
     TIME_REF =  19700101.0d0               ! yyyymmdd.dd
 
@@ -930,23 +929,23 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Output NetCDF file names, [1:Ngrids].
 
-   DAINAME == ROMS_Input-Output/ocean_dai.nc
+   DAINAME == ROMS_Input-Output/vietnam3d_dai.nc
    QCKNAME == ROMS_Input-Output/vietnam3d_qck.nc
    GSTNAME == ROMS_Input-Output/vietnam3d_gst.nc
    RSTNAME == ROMS_Input-Output/vietnam3d_rst.nc
    HISNAME == ROMS_Input-Output/vietnam3d_his.nc
-   TLMNAME == ROMS_Input-Output/ocean_tlm.nc
-   TLFNAME == ROMS_Input-Output/ocean_tlf.nc
-   ADJNAME == ROMS_Input-Output/ocean_adj.nc
+   TLMNAME == ROMS_Input-Output/vietnam3d_tlm.nc
+   TLFNAME == ROMS_Input-Output/vietnam3d_tlf.nc
+   ADJNAME == ROMS_Input-Output/vietnam3d_adj.nc
    AVGNAME == ROMS_Input-Output/vietnam3d_avg.nc
    DIANAME == ROMS_Input-Output/vietnam3d_dia.nc
    STANAME == ROMS_Input-Output/vietnam3d_sta.nc
-   FLTNAME == ROMS_Input-Output/ocean_flt.nc
+   FLTNAME == ROMS_Input-Output/vietnam3d_flt.nc
 
 ! Input ASCII parameter filenames.
 
 !   APARNAM =  /vol/hindcast3/larsrh/roms/External/s4dvar.in
-   SPOSNAM = /vol/hindcast3/andrewws/3d/stations_vietnam.in
+    SPOSNAM = /home/andrewws/Vietnam3d_setup/Master_setup/Include/stations.in   ! Stations file
 !   FPOSNAM =  /vol/hindcast3/larsrh/roms/External/floats.in
 !   BPARNAM =  /vol/hindcast3/larsrh/roms/bio_Fennel.in
 !   SPARNAM =  /vol/hindcast3/larsrh/roms/sediment.in
