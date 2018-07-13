@@ -19,12 +19,13 @@ endY = str(endDate.year)
 endM = str("%02d" % endDate.month)
 endD = str("%02d" % endDate.day)
 
-credentials = open("credentials","r")
+key = open("credentials","r")
+credentials = key.read().split("\n")
 
 ## Command to call in terminal
 command = "python motu-client-python/motu-client.py " +\
-"--user '" + credentials.read().split("\n")[0] + "' " +\
-"--pwd '" + credentials.read().split("\n")[1] + "' " +\
+"--user '" + credentials[0] + "' " +\
+"--pwd '" + credentials[1] + "' " +\
 "--motu http://nrt.cmems-du.eu/motu-web/Motu " +\
 "--service-id GLOBAL_ANALYSIS_FORECAST_PHY_001_024-TDS " +\
 "--product-id global-analysis-forecast-phy-001-024 " +\
