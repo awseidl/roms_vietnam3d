@@ -90,7 +90,7 @@ echo "Now running ROMS..."
 mpirun -n 2 oceanM $ROMS_INPUT_FILE >> $ROMS_LOG_FILE
 
 ## Visual cue
-for i in {0...9}; do echo "##      ##"; done
+for i in {0..5}; do echo "##      ##"; done
 
 ## Copying completed output to separate folder
 echo "Simulation complete"
