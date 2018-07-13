@@ -85,8 +85,6 @@ rm $ROMS_LOG_FILE
 echo > $ROMS_LOG_FILE
 gnome-terminal -e "tail -f "$ROMS_LOG_FILE
 
-exit
-
 ## Start ROMS
 echo "Now running ROMS..."
 mpirun -n 2 oceanM $ROMS_INPUT_FILE >> $ROMS_LOG_FILE
