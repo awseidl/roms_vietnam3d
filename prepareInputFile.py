@@ -104,7 +104,7 @@ with open(inputFile,'w') as f:
             f.writelines(line)
 
 # Looking for stations.in in correct place
-staReplace = "    SPOSNAM = " +rootFolder+ "/Include/stations.in   ! Stations file\n"
+staReplace = "    SPOSNAM = " +rootFolder+ "/Include/stations_vietnam.in   ! Stations file\n"
 with open(inputFile,'r') as f:
     get_all=f.readlines()
 

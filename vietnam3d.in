@@ -377,7 +377,7 @@ LtracerSponge == T T                            ! temperature, salinity, inert
 ! origin for tidal forcing, and model reference time for output
 ! NetCDF units attribute.
 
-      DSTART =  17722.5d0                  ! 2018-07-10 12:00:00
+      DSTART =  17724.5d0                  ! 2018-07-12 12:00:00
   TIDE_START =  0.0d0                      ! days
     TIME_REF =  19700101.0d0               ! yyyymmdd.dd
 
