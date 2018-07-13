@@ -33,8 +33,8 @@ command = "python motu-client-python/motu-client.py " +\
 "--longitude-max 122 " +\
 "--latitude-min 3 " +\
 "--latitude-max 24 " +\
-"--date-min "+startY+"-"+startM+"-"+startD+" 12:00:00 " +\
-"--date-max "+endY+"-"+endM+"-"+endD+" 12:00:00 " +\
+'--date-min "'+startY+"-"+startM+"-"+startD+' 12:00:00" ' +\
+'--date-max "'+endY+"-"+endM+"-"+endD+' 12:00:00" ' +\
 "--depth-min 0.493 " +\
 "--depth-max 5727.918000000001 " +\
 "--variable thetao --variable so --variable zos --variable uo --variable vo " +\
@@ -42,7 +42,7 @@ command = "python motu-client-python/motu-client.py " +\
 "--out-name vietnam3d_forecast.nc"
 
 print "Downloading CMEMS ocean state file..."
-
+#print command
 os.system(command)
 
 ## Original contents of get_cmems_daily_forecast text file (and a description of what they represent)
