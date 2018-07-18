@@ -72,43 +72,49 @@ ncks -O -d time,0,24 -d time,26, $FILEOUT $FILEOUT
 ncwa -O -a surface $FILEOUT $FILEOUT
 
 ############## Precipitation ##################
+## Creation of netCDf with accumulated rainfall information
 ncks -O -h -v precipitation_amount_acc $FILEOUT rain.nc
 ncks -O -h -x -v precipitation_amount_acc $FILEOUT $FILEOUT
 ncrename -v precipitation_amount_acc,acc_rain rain.nc
 
+## Extracting starttime and endtime precip amounts
 ncks -O -d time,0,-2 rain.nc Srain.nc
 ncap2 -O -s "acc_rain(0,:,:)=0" Srain.nc Srain.nc
 ncks -O -d time,1,-1 rain.nc Erain.nc
 
+## Converting Mg to kg, and generating rainfall between timesteps
 cdo -s mulc,1000 -sub Erain.nc Srain.nc Drain.nc
 ncrename -v acc_rain,rainDT Drain.nc
 ncatted -O -h -a units,rainDT,m,c,"kg/m^2" Drain.nc
 ncatted -O -h -a long_name,rainDT,m,c,"Precip since last timestep" Drain.nc
 
+## Adding to main rain netCDF
 cdo -O merge Drain.nc rain.nc
 
-rm Srain.nc Erain.nc Drain.nc
-
+## Calculating duration between timesteps (seconds)
 ncap2 -A -s "timeDT=(time(1:time.size()-1)-time(0:time.size()-2))*1440*60" rain.nc rain.nc
 ncatted -O -h -a units,timeDT,m,c,seconds rain.nc
 ncatted -O -h -a axis,timeDT,d,, rain.nc
 ncatted -O -h -a long_name,timeDT,c,c,"Time since last timestep" rain.nc
 
+## Calculating rainfall rates (*2 since ROMS makes linear interpolation between timesteps, and total precipitation should be conserved. Think area of a triangle (A=BH/2))
 ncap2 -O -h -s "rain=rainDT/timeDT*2" rain.nc rain.nc
 ncatted -O -h -a long_name,rain,m,c,"Rainfall rate" rain.nc
 ncatted -O -h -a units,rain,m,c,"kg/m^2/s" rain.nc
 
+## Generating "start time" rainfall rates (assumed to be zero)
 ncks -O -v rain rain.nc rain.nc
 ncks -O -d time,0 -v rain rain.nc rain0.nc
-
 ncap2 -O -s "time=time-0.125" rain0.nc rain0.nc
 ncap2 -O -s "rain=0" rain0.nc rain0.nc
 
+## Merging rain files together 
 cdo -O mergetime rain0.nc rain.nc out.nc
 mv out.nc rain.nc
 
+## Merging rain file with main atmo forcing file
 cdo -O merge rain.nc $FILEOUT out.nc
-rm rain0.nc rain.nc
+rm rain0.nc rain.nc Srain.nc Erain.nc Drain.nc
 mv out.nc $FILEOUT
 echo "Precipitation rates calculated"
 
