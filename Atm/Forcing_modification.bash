@@ -10,12 +10,13 @@ echo "Output file: " $FILEOUT
 
 #FILEORIGINAL="${FILEIN::-3}_Original.nc"
 #cp $FILEIN $FILEORIGINAL
+#cp $FILEORIGINAL $FILEIN
 #echo Original copied
 
 ## There are many fields present in file that we will not be using. They are removed to reduce file size and speed up upcoming netCDF operations
 ncks -O -h -x -v fog_area_fraction,air_temperature_pl,relative_humidity_pl,y_wind_pl,x_wind_pl,geopotential_pl,surface_geopotential,low_type_cloud_area_fraction,surface_air_pressure,medium_type_cloud_area_fraction,land_area_fraction,lwe_thickness_of_surface_snow_amount,sea_surface_temperature,high_type_cloud_area_fraction,soil_temperature,lwe_thickness_of_convective_precipitation_amount,surface_downwelling_shortwave_flux_in_air_acc,lwe_thickness_of_stratiform_precipitation_amount,specific_convective_available_potential_energy,surface_upward_latent_heat_flux_acc,wind_speed_of_gust,surface_upward_sensible_heat_flux_acc,ap,b,depth_between_layers,forecast_reference_time,hybrid,p0,pressure,surface_air_pressure $FILEIN $FILEIN
 
-## ECMWF forcing file comes flipped in North-South direction (Min latitude 40N, max latitude 0). This command flips all fields and the dimension correctly
+## ECMWF forcing file comes flipped in North-South direction (Min latitude: 40N, max latitude: 0). This command flips all fields and the dimension correctly
 ncpdq -O -a -latitude $FILEIN $FILEIN
 echo "Latitude flipped"
 
@@ -62,19 +63,61 @@ echo "RH calculated"
 cdo setreftime,1970-1-1,00:00:00,days $FILEIN $FILEOUT
 echo "Ref Time set to: Days since 1970-01-01 00:00"
 
-## Modify variable attributes
-for v in Vwind Uwind cloud Tair Tdair Pair Qair; do
-	ncatted -O -h -a coordinates,$v,c,c,"lon lat" $FILEOUT
-done
-ncwa -O -a surface $FILEOUT $FILEOUT
-echo "Variable attributes modified"
-
-
 ## Remove raw input forcing file to reduce clutter and prevent cross contamination between simulations
 rm $FILEIN
 
 ## For some reason, 26th (25th with 0 indexing) time is always composed of entirely missing data. This ncks command removes it
 ncks -O -d time,0,24 -d time,26, $FILEOUT $FILEOUT
+
+ncwa -O -a surface $FILEOUT $FILEOUT
+
+############## Precipitation ##################
+ncks -O -h -v precipitation_amount_acc $FILEOUT rain.nc
+ncks -O -h -x -v precipitation_amount_acc $FILEOUT $FILEOUT
+ncrename -v precipitation_amount_acc,acc_rain rain.nc
+
+ncks -O -d time,0,-2 rain.nc Srain.nc
+ncap2 -O -s "acc_rain(0,:,:)=0" Srain.nc Srain.nc
+ncks -O -d time,1,-1 rain.nc Erain.nc
+
+cdo -s mulc,1000 -sub Erain.nc Srain.nc Drain.nc
+ncrename -v acc_rain,rainDT Drain.nc
+ncatted -O -h -a units,rainDT,m,c,"kg/m^2" Drain.nc
+ncatted -O -h -a long_name,rainDT,m,c,"Precip since last timestep" Drain.nc
+
+cdo -O merge Drain.nc rain.nc
+
+rm Srain.nc Erain.nc Drain.nc
+
+ncap2 -A -s "timeDT=(time(1:time.size()-1)-time(0:time.size()-2))*1440*60" rain.nc rain.nc
+ncatted -O -h -a units,timeDT,m,c,seconds rain.nc
+ncatted -O -h -a axis,timeDT,d,, rain.nc
+ncatted -O -h -a long_name,timeDT,c,c,"Time since last timestep" rain.nc
+
+ncap2 -O -h -s "rain=rainDT/timeDT*2" rain.nc rain.nc
+ncatted -O -h -a long_name,rain,m,c,"Rainfall rate" rain.nc
+ncatted -O -h -a units,rain,m,c,"kg/m^2/s" rain.nc
+
+ncks -O -v rain rain.nc rain.nc
+ncks -O -d time,0 -v rain rain.nc rain0.nc
+
+ncap2 -O -s "time=time-0.125" rain0.nc rain0.nc
+ncap2 -O -s "rain=0" rain0.nc rain0.nc
+
+cdo -O mergetime rain0.nc rain.nc out.nc
+mv out.nc rain.nc
+
+cdo -O merge rain.nc $FILEOUT out.nc
+rm rain0.nc rain.nc
+mv out.nc $FILEOUT
+echo "Precipitation rates calculated"
+
+## Modify variable attributes
+for v in Vwind Uwind cloud Tair Tdair Pair Qair rain; do
+	ncatted -O -h -a coordinates,$v,c,c,"lon lat" $FILEOUT
+done
+
+echo "Variable attributes modified"
 
 mv $FILEOUT ../$3/
 echo 'Atmospheric forcing file ready in "'$3'" folder\n'

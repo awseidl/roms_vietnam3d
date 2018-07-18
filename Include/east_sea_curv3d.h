@@ -261,7 +261,7 @@
 /* ANA_PASSIVE        /* use if analytical inert tracers initial conditions */   
 /* ANA_PERTURB        /* use if analytical perturbation of initial conditions */
 /* ANA_PSOURCE        /* use if analytical point Sources/Sinks */                
-#define ANA_RAIN           /* use if analytical rain fall rate */    
+#undef  ANA_RAIN           /* use if analytical rain fall rate */    
 /* ANA_SEDIMENT       /* use if analytical sediment initial fields */            
 #undef  ANA_SMFLUX         /* use if analytical surface momentum stress */ 
 /* ANA_SPFLUX         /* use if analytical surface passive tracers fluxes */     
