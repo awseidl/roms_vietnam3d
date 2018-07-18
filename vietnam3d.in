@@ -63,7 +63,7 @@
 !==============================================================================
 !									      !
 !  Setup for the 3D implementation of the Vietnamese East Sea		      !
-!       -Last auto use:  2018-07-13                                           !
+!       -Last auto use:  2018-07-17                                           !
 !       -Last updated:   2018-07-03 by ASeidl (andrewws@met.no)		      !
 !									      !
 !==============================================================================
@@ -191,7 +191,7 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
 ! Time-Stepping parameters.
 
-      NTIMES == 7200   ! 5 days at DT=60 seconds
+      NTIMES == 1440   ! 1 days at DT=60 seconds
           DT == 60
      NDTFAST == 30
 
@@ -222,9 +222,9 @@ ad_VolCons(north) ==  F                            ! northern boundary
 ! Output history, quicksave, average, and diagnostic files parameters.
 
       LDEFOUT == T
-         NHIS == 360     ! Every  6 hours at DT=60sec
+         NHIS == 0     ! Every  6 hours at DT=60sec
       NDEFHIS == 0
-         NQCK == 0      ! Every  1 hours at DT=60sec
+         NQCK == 60      ! Every  1 hours at DT=60sec
       NDEFQCK == 0
        NTSAVG == 1
          NAVG == 1440    ! Every 24 hours at DT=60sec
@@ -377,7 +377,7 @@ LtracerSponge == T T                            ! temperature, salinity, inert
 ! origin for tidal forcing, and model reference time for output
 ! NetCDF units attribute.
 
-      DSTART =  17724.5d0                  ! 2018-07-12 12:00:00
+      DSTART =  17728.5d0                  ! 2018-07-16 12:00:00
   TIDE_START =  0.0d0                      ! days
     TIME_REF =  19700101.0d0               ! yyyymmdd.dd
 
@@ -597,20 +597,20 @@ Hout(idMtls) == F       ! gls                turbulent length scale
 ! Logical switches (TRUE/FALSE) to activate writing of fields into
 ! QUICKSAVE output file.
 
-Qout(idUvel) == F       ! u                  3D U-velocity
-Qout(idVvel) == F       ! v                  3D V-velocity
+Qout(idUvel) == T       ! u                  3D U-velocity
+Qout(idVvel) == T       ! v                  3D V-velocity
 Qout(idu3dE) == T       ! u_eastward         3D U-eastward  at RHO-points
 Qout(idv3dN) == T       ! v_northward        3D V-northward at RHO-points
 Qout(idWvel) == T       ! w                  3D W-velocity
 Qout(idOvel) == F       ! omega              omega vertical velocity
-Qout(idUbar) == F       ! ubar               2D U-velocity
-Qout(idVbar) == F       ! vbar               2D V-velocity
+Qout(idUbar) == T       ! ubar               2D U-velocity
+Qout(idVbar) == T       ! vbar               2D V-velocity
 Qout(idu2dE) == T       ! ubar_eastward      2D U-eastward  at RHO-points
 Qout(idv2dN) == T       ! vbar_northward     2D V-northward at RHO-points
 Qout(idFsur) == T       ! zeta               free-surface
 Qout(idBath) == F       ! bath               time-dependent bathymetry
 
-Qout(idTvar) == F F     ! temp, salt         temperature and salinity
+Qout(idTvar) == T T     ! temp, salt         temperature and salinity
 
 Qout(idUsur) == F       ! u_sur              surface U-velocity
 Qout(idVsur) == F       ! v_sur              surface V-velocity
@@ -945,7 +945,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 ! Input ASCII parameter filenames.
 
 !   APARNAM =  /vol/hindcast3/larsrh/roms/External/s4dvar.in
-    SPOSNAM = /home/andrewws/Vietnam3d_setup/Master_setup/Include/stations.in   ! Stations file
+    SPOSNAM = /home/andrewws/Vietnam3d_setup/Master_setup/Include/stations_vietnam.in   ! Stations file
 !   FPOSNAM =  /vol/hindcast3/larsrh/roms/External/floats.in
 !   BPARNAM =  /vol/hindcast3/larsrh/roms/bio_Fennel.in
 !   SPARNAM =  /vol/hindcast3/larsrh/roms/sediment.in
