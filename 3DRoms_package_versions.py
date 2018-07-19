@@ -2,8 +2,9 @@
 ##
 
 import os
+import sys
 
-packages = ['gfortran','netcdf_c','netcdf_fortran','nco','cdo','flex','m4','openmpi','pip','curl','ftp']
+packages = ['gfortran','netcdf_c','netcdf_fortran','nco','cdo','flex','m4','openmpi','pip','curl','ftp','zlib','hdf5']
 
 versions_req = {'gfortran': "4:5.3.1", \
 		'netcdf_c': "4.6.1", \
@@ -15,7 +16,9 @@ versions_req = {'gfortran': "4:5.3.1", \
 		'openmpi': "3.0.1", \
 		'pip': "8.1.1", \
 		'curl': "7.47.0", \
-		'ftp': "0.17"}
+		'ftp': "0.17", \
+		'zlib': "1.2.11", \
+		'hdf5': "1.10.2"}
 
 ## gfortran
 try:
@@ -65,7 +68,7 @@ except IndexError:
 
 ## flex
 try:
-	flex = os.popen("dpkg -s flex | grep -i version").read()
+	flex = os.popen("flex --version").read()
 	flex = flex.split(" ")[1]
 	flex = flex.split("\n")[0]
 	flex = flex.split("+")[0]
@@ -100,7 +103,7 @@ except IndexError:
 
 ## curl
 try:
-	curl = os.popen("dpkg -s curl | grep -i version").read()
+	curl = os.popen("curl --version").read()
 	curl = curl.split(" ")[1]
 	curl = curl.split("\n")[0]
 	curl = curl.split("+")[0]
@@ -118,6 +121,19 @@ try:
 except IndexError:
 	ftp = "Missing"
 
+## zlib
+zlib = os.popen("ldconfig -p | grep hdf5.so").read()
+if zlib == "":
+	zlib = "Missing"
+else:
+	zlib = "Installed"
+
+## hdf5
+hdf5 = os.popen("ldconfig -p | grep libz.so").read()
+if hdf5 == "":
+	hdf5 = "Missing"
+else:
+	hdf5 = "Installed"
 
 versions_install = {'gfortran': gfortran, \
 		'netcdf_c': netcdf_c, \
@@ -129,7 +145,9 @@ versions_install = {'gfortran': gfortran, \
 		'openmpi': openmpi, \
 		'pip': pip, \
 		'curl': curl, \
-		'ftp': ftp}
+		'ftp': ftp,
+		'zlib': zlib,
+		'hdf5': hdf5}
 
 #sys.exit()
 print "Package/Software Name\t\tVersion:"
