@@ -32,7 +32,7 @@ xi_u = brync.createDimension('xi_u', xi_u_num)
 eta_v = brync.createDimension('eta_v', eta_v_num)
 ocean_time = brync.createDimension('ocean_time', None)
 
-## Based of off the two variables listed below, extracts respective variable to respective boundary edge file, and renames them to something that ROMS can recognize. This file is then compressed (averaged) to eliminate the single value dimensions, before being concatenated to output boundary condition file
+## Based of off the two variables listed below (directions & input_vars), extracts respective variable to respective boundary edge file, and renames them to something that ROMS can recognize. This file is then compressed (averaged) to eliminate the single value dimensions, before being concatenated to output boundary condition file
 directions = ["North","South","East","West"]
 input_vars = ["u","v","temp","salt","zeta","ubar","vbar"]
 for bound in directions:
