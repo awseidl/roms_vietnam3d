@@ -118,6 +118,9 @@ rm rain0.nc rain.nc Srain.nc Erain.nc Drain.nc
 mv out.nc $FILEOUT
 echo "Precipitation rates calculated"
 
+## Removing negative rainfall rates (very small values, caused by ECMWF grid interpolation)
+ncap2 -O -h -s "rain(rain<0)=0" $FILEOUT $FILEOUT
+
 ## Modify variable attributes
 for v in Vwind Uwind cloud Tair Tdair Pair Qair rain; do
 	ncatted -O -h -a coordinates,$v,c,c,"lon lat" $FILEOUT
