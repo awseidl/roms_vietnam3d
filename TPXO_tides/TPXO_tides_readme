@@ -1,0 +1,20 @@
+The following tutorial was extremely useful in creating the tidal forcing file:
+https://www.myroms.org/wiki/Tidal_Forcing
+
+This tidal forcing files has been made with the use of MATLAB files fond at:
+http://myroms.org/hunter/roms_tides
+and at:
+http://myroms.org/hunter/roms_tides/update/otps/
+
+This prototype forcing file (with nodal_correction_date-pred_date = "2019-01-01"), was created to be centered around the immediate future needs for tidal predication. Eventually, this forcing file should be updated, but unfortunately, I do not know when an appropriate timeframe for this. Certainly on the order of yearly, perhaps semi-yearly. It is suggested to the end-user to further investigate the effects of this nodal correction and determine the best schedule for updating.
+
+The code contained in the "otps2frc_wrapper.m" is as follows *Be sure to update your MATLAB paths to look in all the downloaded folders (TMD_TOOLBOX,T_TIDEetc...)*:
+
+gfile='east_sea_grd-smooth.nc' % This can either be the absolute or relative path leading to your grid file
+base_date=datenum(1858,11,17) % This is due to the fact that the TPXO8 model uses the modified julian date as a time reference: ie. number of *units* since Nov 17, 1958
+pred_date=datenum(2019,1,1) % This is the time that the nodal correction reference time focuses on. For the prototype version, it was decided to be less than 6 months away from current date.
+ofile='vietnam3d_tid.nc'
+model_file='DATA8atlas/Model8atlas' % This folder contains the txt file "Model8atlas" which has the filepaths of your 3 model files (grid,h, and uv), listed as 3 rows. These can be downloaded here (I used the TPXO8-atlas-compact): http://volkov.oce.orst.edu/tides/tpxo8_atlas.html
+otps2frc_v5(gfile,base_date,pred_date,ofile,model,file,'EASTSEA')
+
+Additional NOTE: Due to time limitations, I was unable to check whether the MATLAB scripts rotated the tide_Cangle field, to match with the curvilinear grid of the EastSea. It is recommended to dive into the code and check this.
