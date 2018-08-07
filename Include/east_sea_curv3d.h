@@ -7,7 +7,7 @@
 *******************************************************************************
 **                                                                           **
 ** Setup for the 3D implementation of the Vietnamese East Sea                **
-**      -Last updated: 2018-06-27 by ASeidl (andrewws@met.no)                **
+**      -Last updated: 2018-07-24 by ASeidl (andrewws@met.no)                **
 **                                                                           **
 *******************************************************************************
 ** OPTIONS associated with momentum equations:                               **
@@ -433,8 +433,8 @@
 **   reduced physics conditions (*_M2FLATHER, *_M2REDUCED).                  **
 **                                                                           */
 
-#undef  SSH_TIDES          /* use if imposing tidal elevation */    
-#undef  UV_TIDES           /* use if imposing tidal currents */            
+#define SSH_TIDES          /* use if imposing tidal elevation */    
+#define UV_TIDES           /* use if imposing tidal currents */            
 /* RAMP_TIDES         /* use if ramping (over one day) tidal forcing */   
 /* FSOBC_REDUCED      /* use if SSH data and reduced physics conditions */
 #undef  ADD_FSOBC          /* use to add tidal elevation to processed OBC data */ 
