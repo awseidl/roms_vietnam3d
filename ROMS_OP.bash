@@ -100,5 +100,3 @@ cp vietnam3d_his.nc ../Complete_output/vietnam3d_his.nc
 cp vietnam3d_avg.nc ../Complete_output/vietnam3d_avg.nc
 cp vietnam3d_sta.nc ../Complete_output/vietnam3d_sta.nc
 echo 'Output netCDFs can be found in "Complete_output" folder'
-
-
