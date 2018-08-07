@@ -63,7 +63,7 @@
 !==============================================================================
 !									      !
 !  Setup for the 3D implementation of the Vietnamese East Sea		      !
-!       -Last auto use:  2018-07-31                                           !
+!       -Last auto use:  2018-08-07                                           !
 !       -Last updated:   2018-08-07 by ASeidl (andrewws@met.no)		      !
 !									      !
 !==============================================================================
@@ -377,7 +377,7 @@ LtracerSponge == T T                            ! temperature, salinity, inert
 ! origin for tidal forcing, and model reference time for output
 ! NetCDF units attribute.
 
-      DSTART =  17742.5d0                  ! 2018-07-30 12:00:00
+      DSTART =  17749.5d0                  ! 2018-08-06 12:00:00
   TIDE_START =  -40587.0d0                 ! days (usinf t=0 as modified julian date (1858-11-17) in TPXO8)
     TIME_REF =  19700101.0d0               ! yyyymmdd.dd
 
@@ -903,7 +903,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input tidal forcing file name.
 
-  TIDENAME == TPXO8_tides/vietnam3d_tid.nc
+   TIDENAME == /home/andrewws/Vietnam3d_setup/Master_setup/TPXO_tides/vietnam3d_tid.nc
 
 ! Input forcing NetCDF file name(s).
 !
