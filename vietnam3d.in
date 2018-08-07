@@ -63,14 +63,14 @@
 !==============================================================================
 !									      !
 !  Setup for the 3D implementation of the Vietnamese East Sea		      !
-!       -Last auto use:  2018-07-17                                           !
-!       -Last updated:   2018-07-03 by ASeidl (andrewws@met.no)		      !
+!       -Last auto use:  2018-07-31                                           !
+!       -Last updated:   2018-08-07 by ASeidl (andrewws@met.no)		      !
 !									      !
 !==============================================================================
 !
 ! Application title.
 
-   TITLE = Vietnam3D Test
+   TITLE = Vietnam3D
 
 ! C-preprocessing Flag.
 
@@ -191,7 +191,7 @@ ad_VolCons(north) ==  F                            ! northern boundary
 
 ! Time-Stepping parameters.
 
-      NTIMES == 1440   ! 1 days at DT=60 seconds
+      NTIMES == 7200   ! 5 days at DT=60 seconds
           DT == 60
      NDTFAST == 30
 
@@ -215,16 +215,16 @@ ad_VolCons(north) ==  F                            ! northern boundary
        NRREC == 0
    LcycleRST == F
         NRST == 17280 ! daily restart files
-        NSTA == 2160
+        NSTA == 0
         NFLT == 99999999
-        NINFO ==  60     ! Every  1 hours at DT=60sec 
+        NINFO ==  10     ! Every  0.16 hours at DT=60sec 
 
 ! Output history, quicksave, average, and diagnostic files parameters.
 
       LDEFOUT == T
-         NHIS == 0     ! Every  6 hours at DT=60sec
+         NHIS == 180     ! Every  3 hours at DT=60sec
       NDEFHIS == 0
-         NQCK == 60      ! Every  1 hours at DT=60sec
+         NQCK == 0       ! Every  1 hours at DT=60sec
       NDEFQCK == 0
        NTSAVG == 1
          NAVG == 1440    ! Every 24 hours at DT=60sec
@@ -377,8 +377,8 @@ LtracerSponge == T T                            ! temperature, salinity, inert
 ! origin for tidal forcing, and model reference time for output
 ! NetCDF units attribute.
 
-      DSTART =  17728.5d0                  ! 2018-07-16 12:00:00
-  TIDE_START =  0.0d0                      ! days
+      DSTART =  17742.5d0                  ! 2018-07-30 12:00:00
+  TIDE_START =  -40587.0d0                 ! days (usinf t=0 as modified julian date (1858-11-17) in TPXO8)
     TIME_REF =  19700101.0d0               ! yyyymmdd.dd
 
 ! Nudging/relaxation time scales, inverse scales will be computed
@@ -597,27 +597,27 @@ Hout(idMtls) == F       ! gls                turbulent length scale
 ! Logical switches (TRUE/FALSE) to activate writing of fields into
 ! QUICKSAVE output file.
 
-Qout(idUvel) == T       ! u                  3D U-velocity
-Qout(idVvel) == T       ! v                  3D V-velocity
-Qout(idu3dE) == T       ! u_eastward         3D U-eastward  at RHO-points
-Qout(idv3dN) == T       ! v_northward        3D V-northward at RHO-points
-Qout(idWvel) == T       ! w                  3D W-velocity
+Qout(idUvel) == F       ! u                  3D U-velocity
+Qout(idVvel) == F       ! v                  3D V-velocity
+Qout(idu3dE) == F       ! u_eastward         3D U-eastward  at RHO-points
+Qout(idv3dN) == F       ! v_northward        3D V-northward at RHO-points
+Qout(idWvel) == F       ! w                  3D W-velocity
 Qout(idOvel) == F       ! omega              omega vertical velocity
-Qout(idUbar) == T       ! ubar               2D U-velocity
-Qout(idVbar) == T       ! vbar               2D V-velocity
-Qout(idu2dE) == T       ! ubar_eastward      2D U-eastward  at RHO-points
-Qout(idv2dN) == T       ! vbar_northward     2D V-northward at RHO-points
+Qout(idUbar) == F       ! ubar               2D U-velocity
+Qout(idVbar) == F       ! vbar               2D V-velocity
+Qout(idu2dE) == F       ! ubar_eastward      2D U-eastward  at RHO-points
+Qout(idv2dN) == F       ! vbar_northward     2D V-northward at RHO-points
 Qout(idFsur) == T       ! zeta               free-surface
 Qout(idBath) == F       ! bath               time-dependent bathymetry
 
-Qout(idTvar) == T T     ! temp, salt         temperature and salinity
+Qout(idTvar) == F F     ! temp, salt         temperature and salinity
 
 Qout(idUsur) == F       ! u_sur              surface U-velocity
 Qout(idVsur) == F       ! v_sur              surface V-velocity
-Qout(idUsuE) == T       ! u_sur_eastward     surface U-eastward  velocity
-Qout(idVsuN) == T       ! v_sur_northward    surface V-northward velocity
+Qout(idUsuE) == F       ! u_sur_eastward     surface U-eastward  velocity
+Qout(idVsuN) == F       ! v_sur_northward    surface V-northward velocity
 
-Qout(idsurT) == T T     ! temp_sur, salt_sur surface temperature and salinity
+Qout(idsurT) == F F     ! temp_sur, salt_sur surface temperature and salinity
 
 Qout(idpthR) == F       ! z_rho              time-varying depths of RHO-points
 Qout(idpthU) == F       ! z_u                time-varying depths of U-points
@@ -903,7 +903,7 @@ Dout(iTvdif) == T T     ! temp_vdiff, ...    vertical diffusion
 
 ! Input tidal forcing file name.
 
-!  TIDENAME == ocean_tides.nc
+  TIDENAME == TPXO8_tides/vietnam3d_tid.nc
 
 ! Input forcing NetCDF file name(s).
 !
