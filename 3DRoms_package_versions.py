@@ -3,8 +3,10 @@
 
 import os
 import sys
+import subprocess
 
-packages = ['gfortran','netcdf_c','netcdf_fortran','nco','cdo','flex','m4','openmpi','pip','curl','ftp','zlib','hdf5']
+packages = ['gfortran','netcdf_c','netcdf_fortran','nco','cdo','flex','m4', \
+'openmpi','pip','curl','ftp','zlib','hdf5','python']
 
 versions_req = {'gfortran': "4:5.3.1", \
 		'netcdf_c': "4.6.1", \
@@ -18,7 +20,8 @@ versions_req = {'gfortran': "4:5.3.1", \
 		'curl': "7.47.0", \
 		'ftp': "0.17", \
 		'zlib': "1.2.11", \
-		'hdf5': "1.10.2"}
+		'hdf5': "1.10.2", \
+		'python': "2.7.12"}
 
 ## gfortran
 try:
@@ -121,6 +124,16 @@ try:
 except IndexError:
 	ftp = "Missing"
 
+## python
+#try:
+	#python = os.popen("python --version").read()
+	#python = python.split(" ")[1]
+	#python = python.split("\n")[0]
+	#python = python.split("+")[0]
+	#python = python.split("-")[0]
+#except IndexError:
+python = "N/A"
+	
 ## zlib
 zlib = os.popen("ldconfig -p | grep hdf5.so").read()
 if zlib == "":
@@ -145,14 +158,14 @@ versions_install = {'gfortran': gfortran, \
 		'openmpi': openmpi, \
 		'pip': pip, \
 		'curl': curl, \
-		'ftp': ftp,
-		'zlib': zlib,
-		'hdf5': hdf5}
+		'ftp': ftp, \
+		'zlib': zlib, \
+		'hdf5': hdf5, \
+		'python': python}
 
-#sys.exit()
 print "Package/Software Name\t\tVersion:"
 print "\t\t\tRecommended\tInstalled"
-for i in packages:
+for i in packages[:-1]:
 	if len(i) <= 7:
 		spacer = "\t\t\t"
 	else:
